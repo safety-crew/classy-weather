@@ -40,12 +40,8 @@ class App extends React.Component {
     weather: {},
   };
 
-  constructor(props) {
-    super(props);
-    this.fetchWeather = this.fetchWeather.bind(this);
-  }
-
-  async fetchWeather() {
+  fetchWeather = async () => {
+    // fetchWeather =
     try {
       this.setState({ isLoading: true });
 
@@ -75,20 +71,18 @@ class App extends React.Component {
     } finally {
       this.setState({ isLoading: false });
     }
-  }
+  };
+
+  setLocation = (e) => this.setState({ location: e.target.value });
 
   render() {
     return (
       <div className="app">
         <h1>Classy weather</h1>
-        <div>
-          <input
-            type="text"
-            placeholder="Search from location..."
-            value={this.state.location}
-            onChange={(e) => this.setState({ location: e.target.value })}
-          />
-        </div>
+        <Input
+          location={this.state.location}
+          onChangeLocation={this.setLocation}
+        />
         <button onClick={this.fetchWeather}>Get weather</button>
 
         {this.state.isLoading && <p className="loader">Loading...</p>}
@@ -105,6 +99,21 @@ class App extends React.Component {
 }
 
 export default App;
+
+class Input extends React.Component {
+  render() {
+    return (
+      <div>
+        <input
+          type="text"
+          placeholder="Search from location..."
+          value={this.props.location}
+          onChange={this.props.onChangeLocation}
+        />
+      </div>
+    );
+  }
+}
 
 class Weather extends React.Component {
   render() {
